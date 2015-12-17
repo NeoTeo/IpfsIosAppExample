@@ -1,1 +1,1 @@
-github "NeoTeo/swift-ipfs-api" "experiment"
+github "NeoTeo/swift-ipfs-api" == 0.1.2
