@@ -10,35 +10,40 @@ import UIKit
 import SwiftIpfsApi
 
 class ViewController: UIViewController {
-
-    @IBOutlet weak var ipfsNodeId: UITextField!
+    
+    @IBOutlet weak var ipfsNodeId: UILabel!
+    var disco: IpfsNodeDiscovery?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-            do {
-                let api = try IpfsApi(host: "192.168.5.9", port: 5001)
-                
-                try api.id() {
-                    (idData : JsonType) in
-                    
-                    let winName = idData.object?["ID"]?.string
-                    
-                    self.ipfsNodeId.text = winName
-                }
-            } catch {
-                print("There was an error initializing the IPFS api client: \(error)")
-            }
-
-        
-        let disco = IpfsNodeDiscovery()
-        disco.searchForNodeIP() {
-            return "ARSE"
+        disco = IpfsNodeDiscovery()
+        disco!.searchForNodeIP() { ip in
+            print("Handler received \(ip)")
+            self.goApi(ip)
         }
-        print("So far...")
-        NSRunLoop.currentRunLoop().run()
+
+//        NSRunLoop.currentRunLoop().run()
     }
 
+    func goApi(theIp: String) {
+        do {
+//            let api = try IpfsApi(host: "192.168.5.9", port: 5001)
+            let api = try IpfsApi(host: theIp, port: 5001)
+            try api.id() {
+                (idData : JsonType) in
+                
+                let winName = idData.object?["ID"]?.string
+                /// Any UIKit calls need to happen on the main thread.
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.ipfsNodeId.text = winName
+                }
+            }
+        } catch {
+            print("There was an error initializing the IPFS api client: \(error)")
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -76,13 +81,16 @@ class IpfsNodeDiscovery : NSObject, NSNetServiceBrowserDelegate, NSNetServiceDel
 //    let SERVICE_TYPE = "_1password4._tcp."
     let domainBrowser: NSNetServiceBrowser
     var active_service: NSNetService?
+    var active_handler: ((String) -> ())?
+    var node_address: String?
     
     override init() {
         domainBrowser = NSNetServiceBrowser()
         super.init()
     }
     
-    func searchForNodeIP(handler: ()->String?) {
+    func searchForNodeIP(handler: (String) -> ()) {
+        active_handler = handler
         domainBrowser.delegate = self
         domainBrowser.searchForServicesOfType(SERVICE_TYPE, inDomain: DOMAIN)
     }
@@ -132,7 +140,10 @@ class IpfsNodeDiscovery : NSObject, NSNetServiceBrowserDelegate, NSNetServiceDel
                 let addrData = withUnsafePointer(&storage) { UnsafePointer<sockaddr_in>($0).memory }
                 var addr = addrData.sin_addr
                 ipc = inet_ntop(Int32(addrData.sin_family), &addr, buf, __uint32_t(INET6_ADDRSTRLEN))
-                
+                /// ignore localhost
+                if let addrString = String.fromCString(ipc) where addrString != "127.0.0.1" {
+                    node_address = addrString //String.fromCString(ipc)
+                }
             case AF_INET6:
                 let addr6Data = withUnsafePointer(&storage) { UnsafePointer<sockaddr_in6>($0).memory }
                 var addr = addr6Data.sin6_addr
@@ -140,6 +151,7 @@ class IpfsNodeDiscovery : NSObject, NSNetServiceBrowserDelegate, NSNetServiceDel
 
             default: break
             }
+
             print(String.fromCString(ipc))
         }
     }
@@ -154,6 +166,12 @@ class IpfsNodeDiscovery : NSObject, NSNetServiceBrowserDelegate, NSNetServiceDel
     func netServiceDidStop(sender: NSNetService) {
         print("stop")
         active_service = nil
+        if let handler = active_handler, let node = node_address {
+            active_handler = nil
+            handler(node)
+        } else {
+            print("Error: no node address")
+        }
     }
 }
 

@@ -18,30 +18,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your IPFS ID is:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Jj-3Y-IOE">
-                                <rect key="frame" x="95" y="253" width="439" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Searching..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mVa-Pr-ylx">
+                                <rect key="frame" x="20" y="289" width="560" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Unn-ub-1eU">
-                                <rect key="frame" x="20" y="306" width="560" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your local IPFS node ID is:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Jj-3Y-IOE">
+                                <rect key="frame" x="20" y="253" width="560" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Unn-ub-1eU" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Ahl-jK-0vA"/>
-                            <constraint firstItem="Unn-ub-1eU" firstAttribute="top" secondItem="6Jj-3Y-IOE" secondAttribute="bottom" constant="32" id="BTc-c3-bF5"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="6Jj-3Y-IOE" secondAttribute="trailing" constant="46" id="IEg-4c-b0z"/>
+                            <constraint firstItem="mVa-Pr-ylx" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="4eH-hy-BdN"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6Jj-3Y-IOE" secondAttribute="trailing" id="IEg-4c-b0z"/>
                             <constraint firstItem="6Jj-3Y-IOE" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="233" id="WDp-QY-e8L"/>
-                            <constraint firstItem="6Jj-3Y-IOE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="75" id="aEZ-r2-Rsh"/>
-                            <constraint firstItem="Unn-ub-1eU" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="avx-9T-nn9"/>
+                            <constraint firstItem="6Jj-3Y-IOE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="aEZ-r2-Rsh"/>
+                            <constraint firstItem="mVa-Pr-ylx" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="aUw-17-A4Z"/>
+                            <constraint firstItem="mVa-Pr-ylx" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="ig9-6b-HHS"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="ipfsNodeId" destination="Unn-ub-1eU" id="qV6-TR-ee8"/>
+                        <outlet property="ipfsNodeId" destination="mVa-Pr-ylx" id="ZZc-mL-cvM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
