@@ -22,13 +22,11 @@ class ViewController: UIViewController {
             print("Handler received \(ip)")
             self.goApi(ip)
         }
-
-//        NSRunLoop.currentRunLoop().run()
     }
 
     func goApi(theIp: String) {
         do {
-//            let api = try IpfsApi(host: "192.168.5.9", port: 5001)
+
             let api = try IpfsApi(host: theIp, port: 5001)
             try api.id() {
                 (idData : JsonType) in
@@ -50,34 +48,11 @@ class ViewController: UIViewController {
     }
 }
 
-/**
- Service: <NSNetService 0x7fd843b411e0> . _tcp.local. _airplay
- Service: <NSNetService 0x7fd843b411e0> . _tcp.local. _raop
- Service: <NSNetService 0x7fd84241e6c0> . _tcp.local. _touch-able
- Service: <NSNetService 0x7fd84241e6c0> . _tcp.local. _appletv-v2
- Service: <NSNetService 0x7fd84251b2e0> . _tcp.local. _icloud-ds
- Service: <NSNetService 0x7fd84251b2e0> . _tcp.local. _apple-mobdev2
- Service: <NSNetService 0x7fd84251b2e0> . _tcp.local. _dacp
- Service: <NSNetService 0x7fd84251b2e0> . _udp.local. _sleep-proxy
- Service: <NSNetService 0x7fd84251b2e0> . _tcp.local. _acp-sync
- Service: <NSNetService 0x7fd84251b2e0> . _tcp.local. _airport
- Service: <NSNetService 0x7fd84251b2e0> . _tcp.local. _workstation
- Service: <NSNetService 0x7fd84251b2e0> . _tcp.local. _udisks-ssh
- Service: <NSNetService 0x7fd84251b2e0> . _tcp.local. _afpovertcp
- Service: <NSNetService 0x7fd84251b2e0> . _tcp.local. _ssh
- Service: <NSNetService 0x7fd84251b2e0> . _tcp.local. _sftp-ssh
- as in: 
- ...
- Service: <NSNetService 0x7fd84251b2e0> . _tcp.local. _rfb
- Service: <NSNetService 0x7fd84251b2e0> . _tcp.local. _1password4
- Service: <NSNetService 0x7fd8438005a0> . ipfs.local. discovery
- ...
-*/
 class IpfsNodeDiscovery : NSObject, NSNetServiceBrowserDelegate, NSNetServiceDelegate {
     let DOMAIN = "" //"local"
 //    let SERVICE_TYPE = "_services._dns-sd._udp."//"_airplay._tcp."
-//    let SERVICE_TYPE = "_discovery._ipfs."
-        let SERVICE_TYPE = "_ipfs._tcp."
+    let SERVICE_TYPE = "_discovery._ipfs._tcp"
+//    let SERVICE_TYPE = "_ipfs._tcp."
 //    let SERVICE_TYPE = "_1password4._tcp."
     let domainBrowser: NSNetServiceBrowser
     var active_service: NSNetService?
@@ -161,8 +136,9 @@ class IpfsNodeDiscovery : NSObject, NSNetServiceBrowserDelegate, NSNetServiceDel
     }
     
     func netService(sender: NSNetService, didNotResolve errorDict: [String : NSNumber]) {
-        print("nohappy")
+        print("nohappy \(errorDict)")
     }
+    
     func netServiceDidStop(sender: NSNetService) {
         print("stop")
         active_service = nil
