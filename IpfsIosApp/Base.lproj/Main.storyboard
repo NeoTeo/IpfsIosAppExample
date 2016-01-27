@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15E33e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -18,27 +18,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Searching..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mVa-Pr-ylx">
-                                <rect key="frame" x="20" y="289" width="560" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mVa-Pr-ylx">
+                                <rect key="frame" x="20" y="294" width="560" height="12"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your local IPFS node ID is:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Jj-3Y-IOE">
-                                <rect key="frame" x="20" y="253" width="560" height="21"/>
+                                <rect key="frame" x="20" y="163" width="560" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="mVa-Pr-ylx" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="4eH-hy-BdN"/>
+                            <constraint firstItem="mVa-Pr-ylx" firstAttribute="leading" secondItem="6Jj-3Y-IOE" secondAttribute="leading" id="7GU-Qz-z6d"/>
                             <constraint firstAttribute="trailingMargin" secondItem="6Jj-3Y-IOE" secondAttribute="trailing" id="IEg-4c-b0z"/>
-                            <constraint firstItem="6Jj-3Y-IOE" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="233" id="WDp-QY-e8L"/>
+                            <constraint firstItem="6Jj-3Y-IOE" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="143" id="WDp-QY-e8L"/>
+                            <constraint firstItem="mVa-Pr-ylx" firstAttribute="trailing" secondItem="6Jj-3Y-IOE" secondAttribute="trailing" id="Yyj-cH-aTP"/>
                             <constraint firstItem="6Jj-3Y-IOE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="aEZ-r2-Rsh"/>
-                            <constraint firstItem="mVa-Pr-ylx" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="aUw-17-A4Z"/>
-                            <constraint firstItem="mVa-Pr-ylx" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="ig9-6b-HHS"/>
+                            <constraint firstItem="mVa-Pr-ylx" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="eG1-uQ-glc"/>
+                            <constraint firstItem="mVa-Pr-ylx" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="j9E-9R-Hbt"/>
+                            <constraint firstItem="mVa-Pr-ylx" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="mAA-AW-Tx3"/>
                         </constraints>
                     </view>
                     <connections>
