@@ -28,10 +28,13 @@ class ViewController: UIViewController {
         do {
 
             let api = try IpfsApi(host: theIp, port: 5001)
+            
             try api.id() {
                 (idData : JsonType) in
                 
+                print("inside api id")
                 let nodeId = idData.object?["ID"]?.string
+                print("node id is \(nodeId)")
                 /// Any UIKit calls need to happen on the main thread.
                 dispatch_async(dispatch_get_main_queue()) {
                     self.ipfsNodeId.text = nodeId
@@ -51,7 +54,7 @@ class ViewController: UIViewController {
 class IpfsNodeDiscovery : NSObject, NSNetServiceBrowserDelegate, NSNetServiceDelegate {
     let DOMAIN = "" //"local"
 //    let SERVICE_TYPE = "_services._dns-sd._udp."//"_airplay._tcp."
-    let SERVICE_TYPE = "_discovery-ipfs._udp."
+    let SERVICE_TYPE = "_ipfs-discovery._udp."
 //    let SERVICE_TYPE = "_ipfs._tcp."
 //    let SERVICE_TYPE = "_1password4._tcp."
     let domainBrowser: NSNetServiceBrowser
@@ -77,6 +80,7 @@ class IpfsNodeDiscovery : NSObject, NSNetServiceBrowserDelegate, NSNetServiceDel
 
         print("comparing \(SERVICE_TYPE) with \(service.type)")
         if service.type == SERVICE_TYPE {
+            print("success")
 //            if service.name == "_ipfs" {
             // Store the service so we can be sure it's not released.
             
