@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         }
     }
 
-    func goApi(theIp: String) {
+    func goApi(_ theIp: String) {
         do {
 
             let api = try IpfsApi(host: theIp, port: 5001)
@@ -32,8 +32,9 @@ class ViewController: UIViewController {
                 (idData : JsonType) in
                 
                 let winName = idData.object?["ID"]?.string
+				
                 /// Any UIKit calls need to happen on the main thread.
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async() {
                     self.ipfsNodeId.text = winName
                 }
             }
@@ -48,29 +49,29 @@ class ViewController: UIViewController {
     }
 }
 
-class IpfsNodeDiscovery : NSObject, NSNetServiceBrowserDelegate, NSNetServiceDelegate {
+class IpfsNodeDiscovery : NSObject, NetServiceBrowserDelegate, NetServiceDelegate {
     let DOMAIN = "" //"local"
 //    let SERVICE_TYPE = "_services._dns-sd._udp."//"_airplay._tcp."
     let SERVICE_TYPE = "_discovery._ipfs._tcp"
 //    let SERVICE_TYPE = "_ipfs._tcp."
 //    let SERVICE_TYPE = "_1password4._tcp."
-    let domainBrowser: NSNetServiceBrowser
-    var active_service: NSNetService?
+    let domainBrowser: NetServiceBrowser
+    var active_service: NetService?
     var active_handler: ((String) -> ())?
     var node_address: String?
     
     override init() {
-        domainBrowser = NSNetServiceBrowser()
+        domainBrowser = NetServiceBrowser()
         super.init()
     }
     
-    func searchForNodeIP(handler: (String) -> ()) {
+    func searchForNodeIP(_ handler: (String) -> ()) {
         active_handler = handler
         domainBrowser.delegate = self
-        domainBrowser.searchForServicesOfType(SERVICE_TYPE, inDomain: DOMAIN)
+        domainBrowser.searchForServices(ofType: SERVICE_TYPE, inDomain: DOMAIN)
     }
     
-    func netServiceBrowser(browser: NSNetServiceBrowser, didFindService service: NSNetService, moreComing: Bool) {
+    func netServiceBrowser(_ browser: NetServiceBrowser, didFind service: NetService, moreComing: Bool) {
         print("Service: \(service)")
         print("name: \(service.name)")
         print("type: \(service.type)")
@@ -82,18 +83,18 @@ class IpfsNodeDiscovery : NSObject, NSNetServiceBrowserDelegate, NSNetServiceDel
             active_service = service
             print(active_service!.hostName)
             active_service!.delegate = self
-            active_service!.resolveWithTimeout(2.0)
+            active_service!.resolve(withTimeout: 2.0)
         }
     }
     
-    func netServiceBrowserWillSearch(browser: NSNetServiceBrowser) {
+    func netServiceBrowserWillSearch(_ browser: NetServiceBrowser) {
         print("going...")
     }
-    func netServiceBrowserDidStopSearch(browser: NSNetServiceBrowser) {
+    func netServiceBrowserDidStopSearch(_ browser: NetServiceBrowser) {
         print("gone.")
     }
     
-    func netServiceDidResolveAddress(sender: NSNetService) {
+    func netServiceDidResolveAddress(_ sender: NetService) {
         print("Bingo \(sender.addresses)")
         guard let addresses = sender.addresses else { return }
         
@@ -105,41 +106,41 @@ class IpfsNodeDiscovery : NSObject, NSNetServiceBrowserDelegate, NSNetServiceDel
         
         for addr in addresses {
             var storage = sockaddr_storage()
-            addr.getBytes(&storage, length: sizeof(sockaddr_storage))
-            let buf = UnsafeMutablePointer<Int8>.alloc(Int(INET6_ADDRSTRLEN))
-            var ipc = UnsafePointer<Int8>()
+            (addr as NSData).getBytes(&storage, length: sizeof(sockaddr_storage.self))
+            let buf = UnsafeMutablePointer<Int8>.allocate(capacity: Int(INET6_ADDRSTRLEN))
+            var ipc: UnsafePointer<Int8>? = nil
             
             switch Int32(storage.ss_family){
                 
             case AF_INET:
-                let addrData = withUnsafePointer(&storage) { UnsafePointer<sockaddr_in>($0).memory }
+                let addrData = withUnsafePointer(&storage) { UnsafePointer<sockaddr_in>($0).pointee }
                 var addr = addrData.sin_addr
                 ipc = inet_ntop(Int32(addrData.sin_family), &addr, buf, __uint32_t(INET6_ADDRSTRLEN))
                 /// ignore localhost
-                if let addrString = String.fromCString(ipc) where addrString != "127.0.0.1" {
+                if let addrString = String(validatingUTF8: ipc!) , addrString != "127.0.0.1" {
                     node_address = addrString //String.fromCString(ipc)
                 }
             case AF_INET6:
-                let addr6Data = withUnsafePointer(&storage) { UnsafePointer<sockaddr_in6>($0).memory }
+                let addr6Data = withUnsafePointer(&storage) { UnsafePointer<sockaddr_in6>($0).pointee }
                 var addr = addr6Data.sin6_addr
                 ipc = inet_ntop(Int32(addr6Data.sin6_family), &addr, buf, __uint32_t(INET6_ADDRSTRLEN))
 
             default: break
             }
 
-            print(String.fromCString(ipc))
+            print(String(cString: ipc!))
         }
     }
     
-    func netServiceWillResolve(sender: NSNetService) {
+    func netServiceWillResolve(_ sender: NetService) {
         print("Resolving...")
     }
     
-    func netService(sender: NSNetService, didNotResolve errorDict: [String : NSNumber]) {
+    func netService(_ sender: NetService, didNotResolve errorDict: [String : NSNumber]) {
         print("nohappy \(errorDict)")
     }
     
-    func netServiceDidStop(sender: NSNetService) {
+    func netServiceDidStop(_ sender: NetService) {
         print("stop")
         active_service = nil
         if let handler = active_handler, let node = node_address {
