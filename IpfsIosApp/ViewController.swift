@@ -124,9 +124,10 @@ class IpfsNodeDiscovery : NSObject, NetServiceBrowserDelegate, NetServiceDelegat
                 }
                 var addr = addrData.sin_addr
                 ipc = inet_ntop(Int32(addrData.sin_family), &addr, buf, __uint32_t(INET6_ADDRSTRLEN))
-                /// ignore localhost
+                /// Return the first ip we find (ignoring localhost)
                 if let addrString = String(validatingUTF8: ipc!) , addrString != "127.0.0.1" {
                     node_address = addrString //String.fromCString(ipc)
+                    return
                 }
             case AF_INET6:
 //                let addr6Data = withUnsafePointer(to: &storage) { UnsafePointer<sockaddr_in6>($0).pointee }
