@@ -445,10 +445,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Terminal-Glow.IpfsIosAppTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-<<<<<<< HEAD
-=======
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
->>>>>>> 83ee5e8c0b866a97c8f456686255fa781a6f725d
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IpfsIosApp.app/IpfsIosApp";
 			};
