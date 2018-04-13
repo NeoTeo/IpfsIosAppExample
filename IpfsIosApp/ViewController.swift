@@ -27,14 +27,14 @@ class ViewController: UIViewController {
     func goApi(_ theIp: String) {
         do {
 
-            let api = try IpfsApi(host: theIp, port: 5001)
+            let api = try IpfsApi(host: theIp, port: 5001, ssl: true)
             
             try api.id() {
                 (idData : JsonType) in
                 
                 print("inside api id")
                 let nodeId = idData.object?["ID"]?.string
-                print("node id is \(nodeId)")
+                print("node id is \(String(describing: nodeId))")
                 /// Any UIKit calls need to happen on the main thread.
                 DispatchQueue.main.async {
                     self.ipfsNodeId.text = nodeId
@@ -61,6 +61,7 @@ class IpfsNodeDiscovery : NSObject, NetServiceBrowserDelegate, NetServiceDelegat
     var active_service: NetService?
     var active_handler: ((String) -> ())?
     var node_address: String?
+    var isResolvingService: Bool = false
     
     override init() {
         domainBrowser = NetServiceBrowser()
@@ -79,15 +80,16 @@ class IpfsNodeDiscovery : NSObject, NetServiceBrowserDelegate, NetServiceDelegat
         print("type: \(service.type)")
 
         print("comparing \(SERVICE_TYPE) with \(service.type)")
-        if service.type == SERVICE_TYPE {
+        if service.type == SERVICE_TYPE && isResolvingService == false {
             print("success")
 //            if service.name == "_ipfs" {
             // Store the service so we can be sure it's not released.
             
             active_service = service
-            print(active_service!.hostName)
+            print(String(describing: active_service!.hostName))
             active_service!.delegate = self
-            active_service!.resolve(withTimeout: 2.0)
+            active_service!.resolve(withTimeout: 60.0)
+            isResolvingService = true
         }
     }
     
@@ -99,7 +101,7 @@ class IpfsNodeDiscovery : NSObject, NetServiceBrowserDelegate, NetServiceDelegat
     }
     
     func netServiceDidResolveAddress(_ sender: NetService) {
-        print("Bingo \(sender.addresses)")
+        print("Bingo \(String(describing:sender.addresses))")
         guard let addresses = sender.addresses else { return }
         
         enum Ip_socket_address {

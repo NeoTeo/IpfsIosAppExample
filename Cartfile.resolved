@@ -1,7 +1,0 @@
-github "NeoTeo/SwiftGMP" "0dab3c85c82a38a63c376017bc41b65b7950490b"
-github "NeoTeo/SwiftHex" "v0.3"
-github "NeoTeo/VarInt" "4496dd3e510f6891047aa68cca93e024481c7594"
-github "NeoTeo/SwiftBase58" "5d8196e6ea68ddffa59060bb66d984f0e151553f"
-github "NeoTeo/SwiftMultihash" "c250986b09355cc74a07d07ecbe027eebf59281e"
-github "NeoTeo/SwiftMultiaddr" "b7f0c57496aedb5933be06159b59a8d55f1df27f"
-github "NeoTeo/swift-ipfs-api" "44295261cba322260f74050d880c3a401a350e68"

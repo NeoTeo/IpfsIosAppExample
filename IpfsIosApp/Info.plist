@@ -4,16 +4,20 @@
 <dict>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoads</key>
+		<key>NSAllowsLocalNetworking</key>
 		<true/>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>localhost</key>
+			<key>ipfs-thing.localhost</key>
 			<dict>
-				<key>NSTemporaryExceptionMinimumTLSVersion</key>
-				<string>TLSv1.1</string>
-				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
+				<key>NSThirdPartyExceptionMinimumTLSVersion</key>
+				<string>TLSv1.2</string>
+				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+				<false/>
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
